@@ -1,18 +1,16 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 
 void stop(int signum) {
     printf("\nI have been put to sleep.\n");
 }
 
 void wakeup(int signum) {
-    printf("\nI have been woken up after sleeping for 3 seconds.\n");
+    printf("\nI have been woken up after sleeping.\n");
 }
 
-void killed(int signum) {
-    printf("\nI have been killed.");
-}
 
 int main() {
 	pid_t c_pid;
@@ -21,15 +19,18 @@ int main() {
 		printf("I am the child : %d\n", c_pid);
 		signal(SIGTSTP, stop);
         signal(SIGALRM, wakeup);
-        alarm((usigned)3);
-        signal(SIGKILL, killed); 
+        alarm((unsigned)3);
+        signal(SIGKILL, SIG_IGN); 
         while(1); 
 	}
 	else if(c_pid > 0)
 	{
+		sleep(1);
 		printf("I am the parent: %d\n", c_pid);
         kill(c_pid, SIGTSTP);
+        sleep(1);
         kill(c_pid, SIGCONT);
+        sleep(3);
         kill(c_pid, SIGKILL);
 	}
 	else if(c_pid == -1)
