@@ -1,4 +1,4 @@
-/* LKM to print "Hello, World!" to the kernel log */
+/* LKM to print "Hello, World! & Name" to the kernel log */
 
 #include <linux/module.h>
 #include <linux/kernel.h>
@@ -10,6 +10,7 @@ MODULE_DESCRIPTION("Hello World");
 
 static int __init hello_init(void) {
 	printk(KERN_INFO "Hello, world!\n");
+	printk(KERN_INFO "I am Vishhvak.\n");
 	return 0;
 }
 
